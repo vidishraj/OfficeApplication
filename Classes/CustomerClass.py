@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from .AccountClass import Account
 from Exceptions.WrongInputException import WrongInputException
@@ -20,6 +21,14 @@ class Customer:
         else:
             self._account=accountdeets
 
+    def toJSON(self):
+        selfJSon = dict()
+        selfJSon['name'] = self._name
+        selfJSon['age'] = self._age
+        selfJSon['aadhar'] = self._aadharNumber
+        selfJSon['typeOfAccount'] = self.typeOfAccount
+        selfJSon['accountDetails'] = self._account.toJSON() if self._account is not None else None
+        return selfJSon
     def getAge(self):
         return self._age
 

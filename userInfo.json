@@ -1,0 +1,52 @@
+{
+    "Users": [
+        {
+            "Email": "Check",
+            "Password": "password@1",
+            "CustomerList": null,
+            "OfficeList": null,
+            "EmployeeList": null,
+            "ManagerList": null
+        },
+        {
+            "Email": "",
+            "Password": "",
+            "CustomerList": [
+                {
+                    "name": "Aishwarya",
+                    "age": 84,
+                    "aadhar": 12345,
+                    "typeOfAccount": "Retail",
+                    "accountDetails": {
+                        "accountNumber": 26314,
+                        "Deposit": 500,
+                        "initDeposit": 500,
+                        "accountType": "Checking",
+                        "timeOfAccountOpening": "25/09/22 16:44:57"
+                    }
+                }
+            ],
+            "OfficeList": [
+                {
+                    "name": "Prestige",
+                    "location": "Paris",
+                    "officeType": true,
+                    "employeeCount": 600,
+                    "expense": 0
+                }
+            ],
+            "EmployeeList": [
+                {
+                    "name": "vidish",
+                    "age": "27",
+                    "joiningDate": "5/11/22",
+                    "salary": 100000,
+                    "workinghours": 7,
+                    "type": "createSoftwareEngineer",
+                    "manager": null
+                }
+            ],
+            "ManagerList": []
+        }
+    ]
+}

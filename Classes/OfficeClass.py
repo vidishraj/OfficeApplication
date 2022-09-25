@@ -12,6 +12,14 @@ class Office:
         self._type = type
         self._EmployeeCount = count
 
+    def toJSON(self):
+        selfJSon = dict()
+        selfJSon['name'] = self._Name
+        selfJSon['location'] = self._Location
+        selfJSon['officeType'] = self._type
+        selfJSon['employeeCount'] = self._EmployeeCount
+        selfJSon['expense'] = self._expense
+        return selfJSon
     def checkLimit(self):
         if self._type and self._expense >= 100000:
             self._limitReached = True

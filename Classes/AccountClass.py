@@ -1,3 +1,4 @@
+import json
 from datetime import date, datetime
 
 
@@ -14,6 +15,18 @@ class Account:
         self._initDeposit = initDeposit
         self._type = accountType
         self._timeOfAccountOpening = datetime.now()
+
+    def toJSON(self):
+        selfJSon = dict()
+        selfJSon['accountNumber'] = self._accountNumber
+        selfJSon['Deposit'] = self._Deposit
+        selfJSon['initDeposit'] = self._initDeposit
+        selfJSon['accountType'] = self._type
+        selfJSon['timeOfAccountOpening'] = self._timeOfAccountOpening.strftime("%d/%m/%y %H:%M:%S")
+        return selfJSon
+
+    def setAccountOpeningTime(self, time):
+        self._timeOfAccountOpening = time
 
     def latestBalance(self):
         minutes_diff = int((datetime.now() - self._timeOfAccountOpening).total_seconds() / 60.0)
