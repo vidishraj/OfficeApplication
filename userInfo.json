@@ -70,6 +70,15 @@
             "OfficeList": [],
             "EmployeeList": [
                 {
-                    "name": "akfna",
-                    "age": "20",
-                    "joiningDate": 
+                    "name": "Rajesh",
+                    "age": "23",
+                    "joiningDate": "11/10/2022",
+                    "salary": 100000,
+                    "workinghours": 7,
+                    "type": "createSoftwareEngineer",
+                    "manager": null
+                }
+            ]
+        }
+    ]
+}

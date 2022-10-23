@@ -21,7 +21,7 @@ class Employee:
         selfJSon = dict()
         selfJSon['name'] = self._name
         selfJSon['age'] = self._age
-        selfJSon['joiningDate'] = self._dateOfJoining
+        selfJSon['joiningDate'] = self._dateOfJoining.strftime('%d/%m/%Y')
         selfJSon['salary'] = self._salary
         selfJSon['workinghours'] = self._workinghours
         selfJSon['type'] = self._type
