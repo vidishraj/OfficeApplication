@@ -23,7 +23,9 @@ class UserInit:
         self.__currentUserIndex = None
         customtkinter.set_appearance_mode("dark")  # Modes: system (default), light, dark
         customtkinter.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
+        self.back = None
         self.frame = None
+        self.exit = None
 
     def initUserWindow(self):
         try:
@@ -99,6 +101,7 @@ class UserInit:
             OfficeIcon = ImageTk.PhotoImage(Image.open("assets/office.png").resize((200, 200), Image.ANTIALIAS))
             frame = customtkinter.CTkFrame(menuWindow, width=1000, height=800)
             frame.place(relx=0, rely=0)
+            self.exit=ImageTk.PhotoImage(Image.open("assets/exit.png").resize((50, 50), Image.ANTIALIAS))
             customtkinter.CTkButton(text_font=("Malgun Gothic", 20), image=EmployeeIcon, master=frame, fg_color="white",
                                     text_color="black", text="Employee", width=80,
                                     corner_radius=50, height=70, compound="top",
@@ -106,12 +109,24 @@ class UserInit:
                                                                                                   anchor='center')
             customtkinter.CTkButton(text_font=("Malgun Gothic", 20), image=CustomerIcon, master=frame, fg_color="white",
                                     text_color="black", text="Customer", width=80,
-                                    corner_radius=50, height=70, compound="top").place(relx=0.5, rely=0.4,
+                                    corner_radius=50, height=70, compound="top",command=lambda: [self.CustomerMenu(), frame.destroy()]).place(relx=0.5, rely=0.4,
                                                                                        anchor='center')
             customtkinter.CTkButton(text_font=("Malgun Gothic", 20), image=OfficeIcon, master=frame, fg_color="white",
                                     text_color="black", text="Office", width=80,
-                                    corner_radius=50, height=70, compound="top").place(relx=0.5, rely=0.65,
+                                    corner_radius=50, height=70, compound="top",command=lambda: [self.OfficeMenu(), frame.destroy()]).place(relx=0.5, rely=0.65,
                                                                                        anchor='center')
+
+            self.back = ImageTk.PhotoImage(Image.open("assets/back.png").resize((50, 50), Image.ANTIALIAS))
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.exit, master=self.parentWindow, fg_color="white",
+                                    text_color="black", text="Exit", width=80, corner_radius=50, height=70,
+                                    compound="top",
+                                    command=self.parentWindow.destroy).place(relx=0.9, rely=0.1, anchor='center')
+            save = ImageTk.PhotoImage(Image.open("assets/save.png").resize((50, 50), Image.ANTIALIAS))
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=save, master=self.parentWindow,
+                                    fg_color="white",
+                                    text_color="black", text="Save Data.", width=80, corner_radius=50, height=70,
+                                    compound="top",
+                                    command=self.saveUser).place(relx=0.9, rely=0.3, anchor='center')
             menuWindow.mainloop()
         except Exception as E:
             print("Problem with type window.", E)
@@ -119,33 +134,141 @@ class UserInit:
     def EmployeeMenu(self):
         try:
             menuWindow = self.parentWindow
-            employeeWindow = UserEmployeeGUI(menuWindow, self.frame, self.__userData)
+            employeeWindow = UserEmployeeGUI(menuWindow, self.parentWindow, self.__userData)
             frame = customtkinter.CTkFrame(menuWindow, width=1000, height=800)
             frame.place(relx=0, rely=0)
-            addIcon = ImageTk.PhotoImage(Image.open("assets/add.png").resize((200, 150), Image.ANTIALIAS))
-            listIcon = ImageTk.PhotoImage(Image.open("assets/listIcon.png").resize((200, 150), Image.ANTIALIAS))
-            changeIcon = ImageTk.PhotoImage(Image.open("assets/change.png").resize((200, 150), Image.ANTIALIAS))
-
+            addIcon = ImageTk.PhotoImage(Image.open("assets/add.png").resize((200, 200), Image.ANTIALIAS))
+            listIcon = ImageTk.PhotoImage(Image.open("assets/listIcon.png").resize((200, 200), Image.ANTIALIAS))
+            changeIcon = ImageTk.PhotoImage(Image.open("assets/change.png").resize((200, 200), Image.ANTIALIAS))
+            managerIcon = ImageTk.PhotoImage(Image.open("assets/setManager.png").resize((200, 200), Image.ANTIALIAS))
             customtkinter.CTkButton(text_font=("Malgun Gothic", 14), image=addIcon, master=frame, fg_color="white",
                                     text_color="black", text="Add Employee.", width=80,
                                     corner_radius=50, height=70, compound="top",
-                                    command=lambda: [self.EmployeeMenu(), frame.destroy()]).place(relx=0.25, rely=0.15,
+                                    command=lambda: [employeeWindow.employeeChoiceMenu(), frame.destroy()]).place(relx=0.25, rely=0.25,
                                                                                                   anchor='center')
             customtkinter.CTkButton(text_font=("Malgun Gothic", 14), image=listIcon, master=frame, fg_color="white",
                                     text_color="black", text="List Employees. ", width=80,
                                     corner_radius=50, height=70, compound="top",
-                                    command=lambda: [self.EmployeeMenu(), frame.destroy()]).place(relx=0.65, rely=0.15,
+                                    command=lambda: [employeeWindow.listEmployees(), frame.destroy()]).place(relx=0.75, rely=0.25,
                                                                                                   anchor='center')
             customtkinter.CTkButton(text_font=("Malgun Gothic", 14), image=changeIcon, master=frame, fg_color="white",
                                     text_color="black", text="Change Salary.", width=80,
                                     corner_radius=50, height=70, compound="top",
-                                    command=lambda: [self.EmployeeMenu(), frame.destroy()]).place(relx=0.25, rely=0.55,
+                                    command=lambda: [employeeWindow.renderChangePage("salary"), frame.destroy()]).place(relx=0.2, rely=0.55,
                                                                                                   anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 14), image=managerIcon, master=frame, fg_color="white",
+                                    text_color="black", text='Set Manager.', width=80,
+                                    corner_radius=50, height=70, compound="top",
+                                    command=lambda: [employeeWindow.setManager(), frame.destroy()]).place(relx=0.5, rely=0.55,
+                                                                                                  anchor='center')
+
             customtkinter.CTkButton(text_font=("Malgun Gothic", 14), image=changeIcon, master=frame, fg_color="white",
                                     text_color="black", text='Change Workhours.', width=80,
                                     corner_radius=50, height=70, compound="top",
-                                    command=lambda: [self.EmployeeMenu(), frame.destroy()]).place(relx=0.65, rely=0.55,
+                                    command=lambda: [employeeWindow.renderChangePage("working hours"),
+                                                     frame.destroy()]).place(relx=0.8, rely=0.55,
+                                                                             anchor='center')
+
+
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
+                                    text_color="black", text="Back", width=30, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=frame.destroy).place(relx=0.7, rely=0.05, anchor='center')
+
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.exit, master=frame,
+                                    fg_color="white",
+                                    text_color="black", text="Exit", width=80, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=self.parentWindow.destroy).place(relx=0.9, rely=0.05, anchor='center')
+
+            menuWindow.mainloop()
+        except Exception as E:
+            print(E)
+
+    def CustomerMenu(self):
+        try:
+            menuWindow = self.parentWindow
+            customerWindow = UserCustomerGUI(menuWindow, self.frame, self.__userData)
+            accountWindow = UserAccountGUI(menuWindow, self.frame, self.__userData)
+            frame = customtkinter.CTkFrame(menuWindow, width=1000, height=800)
+            frame.place(relx=0, rely=0)
+            addIcon = ImageTk.PhotoImage(Image.open("assets/add.png").resize((200, 200), Image.ANTIALIAS))
+            listIcon = ImageTk.PhotoImage(Image.open("assets/listIcon.png").resize((200, 200), Image.ANTIALIAS))
+            openIcon = ImageTk.PhotoImage(Image.open("assets/open.png").resize((200, 200), Image.ANTIALIAS))
+            displayIcon = ImageTk.PhotoImage(Image.open("assets/display.webp").resize((200, 200), Image.ANTIALIAS))
+
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 14), image=addIcon, master=frame, fg_color="white",
+                                    text_color="black", text="Add Customer.", width=80,
+                                    corner_radius=50, height=70, compound="top",
+                                    command=lambda: [customerWindow.createCustomerComponent(), frame.destroy()]).place(relx=0.25, rely=0.3,
                                                                                                   anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 14), image=listIcon, master=frame, fg_color="white",
+                                    text_color="black", text="List Customers. ", width=80,
+                                    corner_radius=50, height=70, compound="top",
+                                    command=lambda: [customerWindow.ListCustomer(), frame.destroy()]).place(relx=0.75, rely=0.3,
+                                                                                                  anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 14), image=openIcon, master=frame, fg_color="white",
+                                    text_color="black", text="Open Account.", width=80,
+                                    corner_radius=50, height=70, compound="top",
+                                    command=lambda: [accountWindow.openAccount(), frame.destroy()]).place(relx=0.25, rely=0.55,
+                                                                                                  anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 14), image=displayIcon, master=frame, fg_color="white",
+                                    text_color="black", text='Display Accounts.', width=80,
+                                    corner_radius=50, height=70, compound="top",
+                                    command=lambda: [accountWindow.listAccounts(), frame.destroy()]).place(relx=0.75, rely=0.55,
+                                                                                                  anchor='center')
+
+
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
+                                    text_color="black", text="Back", width=30, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=frame.destroy).place(relx=0.7, rely=0.1, anchor='center')
+
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.exit, master=frame,
+                                    fg_color="white",
+                                    text_color="black", text="Exit", width=80, corner_radius=50, height=70,
+                                    compound="top",
+                                    command=self.parentWindow.destroy).place(relx=0.9, rely=0.1, anchor='center')
+
+            menuWindow.mainloop()
+        except Exception as E:
+            print(E)
+
+    def OfficeMenu(self):
+        try:
+            menuWindow = self.parentWindow
+            officeWindow = UserOfficeGUI(menuWindow, self.parentWindow, self.__userData)
+            frame = customtkinter.CTkFrame(menuWindow, width=1000, height=800)
+            frame.place(relx=0, rely=0)
+            addIcon = ImageTk.PhotoImage(Image.open("assets/add.png").resize((200, 200), Image.ANTIALIAS))
+            listIcon = ImageTk.PhotoImage(Image.open("assets/listIcon.png").resize((200, 200), Image.ANTIALIAS))
+            expensesIcon = ImageTk.PhotoImage(Image.open("assets/expenses.png").resize((200, 200), Image.ANTIALIAS))
+
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 14), image=addIcon, master=frame, fg_color="white",
+                                    text_color="black", text="Add Office.", width=80,
+                                    corner_radius=50, height=70, compound="top",
+                                    command=lambda: [officeWindow.addOfficeOption(), frame.destroy()]).place(relx=0.25, rely=0.25,
+                                                                                                  anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 14), image=listIcon, master=frame, fg_color="white",
+                                    text_color="black", text="List Offices. ", width=80,
+                                    corner_radius=50, height=70, compound="top",
+                                    command=lambda: [officeWindow.listOffices(), frame.destroy()]).place(relx=0.75, rely=0.25,
+                                                                                                  anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 14), image=expensesIcon, master=frame, fg_color="white",
+                                    text_color="black", text="Add Expenses.", width=80,
+                                    corner_radius=50, height=70, compound="top",
+                                    command=lambda: [officeWindow.addExpenseOption(), frame.destroy()]).place(relx=0.5, rely=0.55,
+                                                                                                  anchor='center')
+
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
+                                    text_color="black", text="Back", width=30, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=frame.destroy).place(relx=0.7, rely=0.09, anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.exit, master=frame,
+                                    fg_color="white",
+                                    text_color="black", text="Exit", width=80, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=self.parentWindow.destroy).place(relx=0.9, rely=0.1, anchor='center')
 
             menuWindow.mainloop()
         except Exception as E:
@@ -188,72 +311,3 @@ class UserInit:
                 print("User saved")
         except Exception as E:
             print("Problem while saving user info." + E.__str__())
-
-    def userMainMenu(self):
-        menuWindow = customtkinter.CTk()
-        menuWindow.geometry('1000x750+300+000')
-        style = ttk.Style()
-        style.theme_use('clam')
-        employeeWindow = UserEmployeeGUI(menuWindow, self.frame, self.__userData)
-        customerWindow = UserCustomerGUI(menuWindow, self.frame, self.__userData)
-        accountWindow = UserAccountGUI(menuWindow, self.frame, self.__userData)
-        officeWindow = UserOfficeGUI(menuWindow, self.frame, self.__userData)
-        self.frame = customtkinter.CTkFrame(menuWindow, width=1000, height=900, fg_color="white",
-                                            bg_color="white").place(relx=0, rely=0)
-        tk.Button(self.frame, text='Add an employee.', command=lambda: employeeWindow.employeeChoiceMenu(), fg='black',
-                  bg='white').place(relx=0.2, rely=0.1,
-                                    anchor='center')
-        tk.Button(self.frame, text='List all the employees. ',
-                  command=lambda: employeeWindow.listEmployees(),
-                  fg='black',
-                  bg='white').place(relx=0.2, rely=0.2,
-                                    anchor='center')
-        tk.Button(self.frame, text='Change the salary for an employee.',
-                  command=lambda: employeeWindow.renderChangePage("salary"),
-                  fg='black',
-                  bg='white').place(relx=0.2, rely=0.3,
-                                    anchor='center')
-        tk.Button(self.frame, text='Change the worktime of an employee.',
-                  command=lambda: employeeWindow.renderChangePage("working hours"), fg='black',
-                  bg='white').place(relx=0.2, rely=0.4,
-                                    anchor='center')
-
-        tk.Button(self.frame, text='Set Manager for an Employee', command=lambda: employeeWindow.setManager(),
-                  fg='black',
-                  bg='white').place(relx=0.2, rely=0.5,
-                                    anchor='center')
-        tk.Button(self.frame, text='Create a customer.', command=lambda: customerWindow.createCustomerComponent(),
-                  fg='black',
-                  bg='white').place(relx=0.2, rely=0.6,
-                                    anchor='center')
-        tk.Button(self.frame, text='List all the customers.',
-                  command=lambda: customerWindow.ListCustomer(),
-                  fg='black',
-                  bg='white').place(relx=0.8, rely=0.1,
-                                    anchor='center')
-        tk.Button(self.frame, text='Open an account for a customer.', command=lambda: accountWindow.openAccount(),
-                  fg='black',
-                  bg='white').place(relx=0.8, rely=0.2,
-                                    anchor='center')
-        tk.Button(self.frame, text='Display the money in an account.', command=lambda: accountWindow.listAccounts(),
-                  fg='black',
-                  bg='white').place(relx=0.8, rely=0.3,
-                                    anchor='center')
-
-        tk.Button(self.frame, text='Add an office.', command=lambda: officeWindow.addOfficeOption(), fg='black',
-                  bg='white').place(relx=0.8, rely=0.4,
-                                    anchor='center')
-        tk.Button(self.frame, text='List all the offices.', command=lambda: officeWindow.listOffices(), fg='black',
-                  bg='white').place(relx=0.8, rely=0.5,
-                                    anchor='center')
-        tk.Button(self.frame, text='Add expenses to a certain office.', command=lambda: officeWindow.addExpenseOption(),
-                  fg='black',
-                  bg='white').place(relx=0.8, rely=0.6,
-                                    anchor='center')
-        tk.Button(self.frame, text='Save', command=lambda: self.saveUser(), fg='black',
-                  bg='white').place(relx=0.7, rely=0.7,
-                                    anchor='center')
-        tk.Button(self.frame, text='Exit', command=lambda: menuWindow.destroy(), fg='black',
-                  bg='white').place(relx=0.5, rely=0.7,
-                                    anchor='center')
-        menuWindow.mainloop()

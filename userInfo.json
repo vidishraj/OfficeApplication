@@ -24,6 +24,13 @@
                         "accountType": "Checking",
                         "timeOfAccountOpening": "25/09/22 16:44:57"
                     }
+                },
+                {
+                    "name": "yoyo",
+                    "age": 0,
+                    "aadhar": 0,
+                    "typeOfAccount": "Retail",
+                    "accountDetails": null
                 }
             ],
             "OfficeList": [
@@ -32,6 +39,13 @@
                     "location": "Paris",
                     "officeType": true,
                     "employeeCount": 600,
+                    "expense": 0
+                },
+                {
+                    "name": "PPPP",
+                    "location": "",
+                    "officeType": true,
+                    "employeeCount": 0,
                     "expense": 0
                 }
             ],

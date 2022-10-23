@@ -19,6 +19,7 @@ class OfficeService:
                 return office
 
     def setExpense(self, Name, Expense):
+        print(Name, Expense)
         office: Office =self.returnOfficeFromName(Name)
         office.addExpense(Expense)
 

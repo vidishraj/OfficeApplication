@@ -11,6 +11,7 @@ class AccountService:
 
     def addAccount(self, CustomerName, initDeposit, typeOfAccount):
         try:
+            print(CustomerName,initDeposit,typeOfAccount)
             Customer = self.returnCustomerFromName(CustomerName)
             accountNumber: int = randint(10000, 99999)
             newAccount: Account = Account(initDeposit, accountNumber, typeOfAccount)

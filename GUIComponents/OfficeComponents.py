@@ -1,4 +1,9 @@
 import tkinter as tk
+from tkinter import ttk
+
+import customtkinter
+from PIL import ImageTk, Image
+
 from Services.OfficeServices import OfficeService
 
 
@@ -10,23 +15,30 @@ class UserOfficeGUI:
     def __init__(self, rootWindow, Frame, userData):
         self._rootWindow = rootWindow
         self._parentFrame = Frame
+        self.confirm = ImageTk.PhotoImage(Image.open("assets/confirm.webp").resize((50, 50), Image.ANTIALIAS))
+        self.back = ImageTk.PhotoImage(Image.open("assets/back.png").resize((50, 50), Image.ANTIALIAS))
         self._OfficeService = OfficeService(userData)
 
     def addOfficeOption(self):
         try:
-            frame = tk.Frame(self._rootWindow, width=800, height=800)
+            frame = customtkinter.CTkFrame(self._rootWindow, width=1000, height=800)
             frame.grid(row=0, column=0, sticky='news')
-            frame.tkraise(self._parentFrame)
-            tk.Label(frame, text='What type of office would you like to add?').place(relx=0.5, rely=0.2,
-                                                                                     anchor='center')
-            tk.Button(frame, text='International Office',
-                      command=lambda: self.renderMenuForOffice(frame, True), fg='black',
-                      bg='white').place(relx=0.4, rely=0.3,
-                                        anchor='center')
-            tk.Button(frame, text='Local Office', command=lambda: self.renderMenuForOffice(frame, False),
-                      fg='black',
-                      bg='white').place(relx=0.6, rely=0.3,
-                                        anchor='center')
+            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                   text_color="black", text="What type of office would you like to add??", width=100,
+                                   corner_radius=50, height=30, compound="top").place(relx=0.5, rely=0.2,
+                                                                                      anchor='center')
+            international = ImageTk.PhotoImage(Image.open("assets/local.png").resize((50, 50), Image.ANTIALIAS))
+            local = ImageTk.PhotoImage(Image.open("assets/international.webp").resize((50, 50), Image.ANTIALIAS))
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=international, master=frame, fg_color="white",
+                                    text_color="black", text="International", width=80, corner_radius=50, height=70,
+                                    compound="top",
+                                    command=lambda: self.renderMenuForOffice(frame, True)).place(
+                                    relx=0.4, rely=0.3, anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=local, master=frame, fg_color="white",
+                                    text_color="black", text="Local", width=80, corner_radius=50, height=70,
+                                    compound="top",
+                                    command=lambda: self.renderMenuForOffice(frame, False)).place(
+                relx=0.6, rely=0.3, anchor='center')
         except Exception as E:
             print(E)
 
@@ -34,37 +46,75 @@ class UserOfficeGUI:
         name = tk.StringVar()
         location = tk.StringVar()
         employeeCount = tk.IntVar()
-        tk.Label(frame, text='Enter the name of the office:').place(relx=0.2, rely=0.4, anchor='center')
-        tk.Entry(frame, textvariable=name).place(relx=0.5, rely=0.4, anchor='center')
-        tk.Label(frame, text='Enter the location of the office:').place(relx=0.2, rely=0.5, anchor='center')
-        tk.Entry(frame, textvariable=location).place(relx=0.5, rely=0.5, anchor='center')
-        tk.Label(frame, text='Enter the number of employees in the office:').place(relx=0.2, rely=0.65, anchor='center')
-        tk.Entry(frame, textvariable=employeeCount).place(relx=0.5, rely=0.65, anchor='center')
-        tk.Button(frame, text="Confirm data",
-                  command=lambda: [self._OfficeService.addOffice(name.get(), location.get(), True,
+        customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                               text_color="black", text="Enter the name of the office:", width=100,
+                               corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.4,
+                                                                                  anchor='center')
+        customtkinter.CTkEntry(frame, textvariable=name, border_color="white", corner_radius=5,
+                               text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
+                                                                                                      rely=0.4,
+                                                                                                      anchor='center')
+        customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                               text_color="black", text="Enter the location of the office:", width=100,
+                               corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.5,
+                                                                                  anchor='center')
+        customtkinter.CTkEntry(frame, textvariable=location, border_color="white", corner_radius=5,
+                               text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
+                                                                                                      rely=0.5,
+                                                                                                      anchor='center')
+        customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                               text_color="black", text="Enter the number of employees in the office:", width=100,
+                               corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.65,
+                                                                                  anchor='center')
+        customtkinter.CTkEntry(frame, textvariable=employeeCount, border_color="white", corner_radius=5,
+                               text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
+                                                                                                      rely=0.65,
+                                                                                                      anchor='center')
+        customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=frame, fg_color="white",
+                                text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
+                                compound="top",
+                                command=lambda: [self._OfficeService.addOffice(name.get(), location.get(), True,
                                                                  employeeCount.get()) if choice else
                                    self._OfficeService.addOffice(name.get(), location.get(), False, employeeCount.get())
-                      , frame.destroy()]).place(
-            relx=0.2, rely=0.7,
-            anchor='center')
-        tk.Button(frame, text="Back",
-                  command=frame.destroy).place(relx=0.2, rely=0.75, anchor='center')
+                      , frame.destroy()]).place(relx=0.2, rely=0.75, anchor='center')
+        customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
+                                    text_color="black", text="Back", width=30, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=frame.destroy).place(relx=0.4, rely=0.75, anchor='center')
 
     def listOffices(self):
         try:
-            frame = tk.Frame(self._rootWindow, width=800, height=800)
+            frame = customtkinter.CTkFrame(self._rootWindow, width=1000, height=800)
             frame.grid(row=0, column=0, sticky='news')
-            frame.tkraise(self._parentFrame)
+            style = ttk.Style()
+
+            style.theme_use("default")
+
+            style.configure("Treeview",
+                            background="#2a2d2e",
+                            foreground="white",
+                            rowheight=25,
+                            fieldbackground="#343638",
+                            bordercolor="#343638",
+                            borderwidth=0)
+            style.map('Treeview', background=[('selected', '#22559b')])
+
+            style.configure("Treeview.Heading",
+                            background="#565b5e",
+                            foreground="white",
+                            relief="flat")
+            style.map("Treeview.Heading",
+                      background=[('active', '#3484F0')])
             table = tk.ttk.Treeview(frame)
             table.place(relx=0.5, rely=0.25, anchor='center')
             table['columns'] = ('Name', 'Location', 'Type', "Employee Count", "Expenses", "Limit")
             table.column("#0", width=0, stretch="no")
-            table.column("Name", anchor="center", width=150)
-            table.column("Location", anchor="center", width=150)
-            table.column("Type", anchor="center", width=150)
-            table.column("Employee Count", anchor="center", width=150)
-            table.column("Expenses", anchor="center", width=50)
-            table.column("Limit", anchor="center", width=150)
+            table.column("Name", anchor="center", width=200)
+            table.column("Location", anchor="center", width=200)
+            table.column("Type", anchor="center", width=200)
+            table.column("Employee Count", anchor="center", width=200)
+            table.column("Expenses", anchor="center", width=120)
+            table.column("Limit", anchor="center", width=200)
 
             table.heading("#0", text="", anchor="center")
             table.heading("Name", text="Name", anchor="center")
@@ -74,8 +124,10 @@ class UserOfficeGUI:
             table.heading("Expenses", text="Expenses", anchor="center")
             table.heading("Limit", text="Limit", anchor="center")
 
-            tk.Button(frame, text="Back",
-                      command=frame.destroy).place(relx=0.5, rely=0.5, anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
+                                    text_color="black", text="Back", width=30, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=frame.destroy).place(relx=0.5, rely=0.5, anchor='center')
             userOfficeInfo = self._OfficeService.listOffices()
             for i in range(len(userOfficeInfo)):
                 table.insert(parent='', index='end', iid=i, text='',
@@ -84,30 +136,45 @@ class UserOfficeGUI:
             print(E)
 
     def addExpenseOption(self):
-        frame = tk.Frame(self._rootWindow, width=800, height=800)
+        frame = customtkinter.CTkFrame(self._rootWindow, width=1000, height=800)
         frame.grid(row=0, column=0, sticky='news')
-        frame.tkraise(self._parentFrame)
         newExpense = tk.IntVar(frame)
         officeName = tk.StringVar(frame)
         officeNameList=self._OfficeService.returnOfficeNames()
         officeName.set("Choose Office")
-        tk.Label(frame, text='Pick the office you want to add an expense for:').place(relx=0.5, rely=0.2,
-                                                                                      anchor='center')
-        officeMenu = tk.OptionMenu(frame, officeName, *officeNameList)
-        officeMenu.place(relx=0.5, rely=0.3, anchor='center')
-        tk.Button(frame, text="Confirm data",
-                  command=lambda: [addExpense()]).place(
-            relx=0.2, rely=0.7,
-            anchor='center')
+        customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                               text_color="black", text="Pick Office:", width=100,
+                               corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.2,
+                                                                                  anchor='center')
+
+        officeMenu = customtkinter.CTkOptionMenu(frame, variable=officeName, values=officeNameList,
+                                                   fg_color="white", text_color="black", button_color="white")
+        officeMenu.place(relx=0.5, rely=0.2, anchor='center')
+        choose = ImageTk.PhotoImage(Image.open("assets/choose.png").resize((50, 50), Image.ANTIALIAS))
+        customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=choose, master=frame, fg_color="white",
+                                text_color="black", text="Choose", width=30, corner_radius=50, height=30,
+                                compound="top",
+                                command=lambda: addExpense()).place(relx=0.7, rely=0.2, anchor='center')
 
         def addExpense():
-            tk.Label(frame, text='Enter the expense to add:').place(relx=0.2, rely=0.4,
-                                                                    anchor='center')
-            tk.Entry(frame, textvariable=newExpense).place(relx=0.4, rely=0.4, anchor='center')
-            tk.Button(frame, text="Confirm data",
-                      command=lambda: [self._OfficeService.setExpense(officeName.get,newExpense.get()), frame.destroy()]).place(
-                relx=0.2, rely=0.7,
-                anchor='center')
+            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                   text_color="black", text="Enter Expense:", width=100,
+                                   corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.4,
+                                                                                      anchor='center')
+            customtkinter.CTkEntry(frame, textvariable=newExpense, border_color="white", corner_radius=5,
+                                   text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
+                                                                                                          rely=0.4,
+                                                                                                          anchor='center')
 
-        tk.Button(frame, text="Back",
-                  command=frame.destroy).place(relx=0.2, rely=0.75, anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=frame, fg_color="white",
+                                text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
+                                compound="top",
+                                command=lambda: [
+                                    self._OfficeService.setExpense(officeName.get(), newExpense.get()), frame.destroy()]).place(relx=0.5,
+                                                                                                    rely=0.6,
+                                                                                                    anchor='center')
+
+        customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
+                                text_color="black", text="Back", width=30, corner_radius=50, height=30,
+                                compound="top",
+                                command=frame.destroy).place(relx=0.65, rely=0.6, anchor='center')
