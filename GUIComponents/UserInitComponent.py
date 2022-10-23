@@ -62,6 +62,10 @@ class UserInit:
                                                      self.userinfoFrame.destroy()],
                                     width=190, height=40, compound="top").place(relx=0.5, rely=0.75,
                                                                                 anchor='center')
+            customtkinter.CTkButton(self.userinfoFrame, text='Register', fg_color="white", text_color="black",
+                                    command=lambda: [self.createUser()],
+                                    width=190, height=40, compound="top").place(relx=0.5, rely=0.9,
+                                                                                anchor='center')
             loginWindow.mainloop()
         except Exception as E:
             print("Problem while initialising user window." + E.__str__())
@@ -84,11 +88,59 @@ class UserInit:
                     self.__currentUserIndex = i
 
             if userFlag:
-                self.typechoiceWindow()
+                self.typeChoiceWindow()
         except Exception as E:
             print("Problem while checking user credentials.", E)
 
-    def typechoiceWindow(self):
+    def createUser(self):
+        try:
+            registerWindow = customtkinter.CTkToplevel()
+            registerWindow.geometry('450x450+400+100')
+            self.userinfoFrame = customtkinter.CTkFrame(master=registerWindow, width=450, height=450, fg_color="black",
+                                                        bg_color="black")
+
+            self.userinfoFrame.place(relx=0, rely=0)
+            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=self.userinfoFrame, fg_color="white",
+                                   text_color="black",text="Enter a valid username:", width=140,
+                                   corner_radius=50, height=90, compound="top").place(relx=0.5, rely=0.2,
+                                                                                      anchor='center')
+            userNameText = customtkinter.CTkTextbox(self.userinfoFrame, border_color="red", corner_radius=5,
+                                                    text_color="white", width=100, height=2, text_font=("Bold", 8))
+            userNameText.place(
+                relx=0.5, rely=0.36, anchor='center')
+
+            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=self.userinfoFrame, fg_color="white",
+                                   text_color="black", text="Enter your password:", width=100,
+                                   corner_radius=50, height=90, compound="top").place(relx=0.5, rely=0.54,
+                                                                                      anchor='center')
+            passwordText = customtkinter.CTkTextbox(self.userinfoFrame, border_color="red", corner_radius=5,
+                                                    text_color="white", width=100, height=2, text_font=("Bold", 8))
+
+            passwordText.place(relx=0.5, rely=0.7, anchor='center')
+
+            confirm = ImageTk.PhotoImage(Image.open("assets/confirm.webp").resize((50, 50), Image.ANTIALIAS))
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=confirm, master=registerWindow, fg_color="white",
+                                    text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=lambda:[addUsertoJson(),registerWindow.destroy()]).place(relx=0.5,rely=0.9,anchor='center')
+            def addUsertoJson():
+                CustomerFile = open('userInfo.json')
+                CustomerDict = json.load(CustomerFile)
+                newUser = dict()
+                newUser['Email'] = userNameText.textbox.get(1.0, "end-1c")
+                newUser['Password'] = passwordText.textbox.get(1.0, "end-1c")
+                newUser['CustomerList'] = None
+                newUser['ManagerList'] = None
+                newUser['OfficeList'] = None
+                newUser['EmployeeList'] = None
+                CustomerDict['Users'].append(newUser)
+                with open('userInfo.json', 'w', encoding='utf-8') as f:
+                    json.dump(CustomerDict, f, ensure_ascii=False, indent=4)
+
+        except Exception as e:
+            print(e)
+            print("Problem while creating a new user.", e)
+    def typeChoiceWindow(self):
         try:
             menuWindow = self.parentWindow
             self.parentWindow = menuWindow
@@ -273,25 +325,6 @@ class UserInit:
             menuWindow.mainloop()
         except Exception as E:
             print(E)
-
-    def createUser(self):
-        try:
-            CustomerFile = open('userInfo.json')
-            CustomerDict = json.load(CustomerFile)
-            newUser = dict()
-            newUser['Email'] = self.__username
-            newUser['Password'] = self.__password
-            newUser['CustomerList'] = None
-            newUser['ManagerList'] = None
-            newUser['OfficeList'] = None
-            newUser['EmployeeList'] = None
-            CustomerDict['Users'].append(newUser)
-            with open('userInfo.json', 'w', encoding='utf-8') as f:
-                json.dump(CustomerDict, f, ensure_ascii=False, indent=4)
-
-        except Exception as e:
-            print(e)
-            print("Problem while creating a new user.", e)
 
     def saveUser(self):
         try:

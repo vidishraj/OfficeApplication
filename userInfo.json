@@ -61,6 +61,15 @@
                 }
             ],
             "ManagerList": []
-        }
-    ]
-}
+        },
+        {
+            "Email": "raju",
+            "Password": "raju",
+            "CustomerList": [],
+            "ManagerList": [],
+            "OfficeList": [],
+            "EmployeeList": [
+                {
+                    "name": "akfna",
+                    "age": "20",
+                    "joiningDate": 
