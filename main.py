@@ -1,4 +1,4 @@
-from GUIComponents.mainMenuComponent import UserInit
+from GUIComponents.UserInitComponent import UserInit
 
 if __name__ == "__main__":
     try:

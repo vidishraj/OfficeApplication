@@ -1,11 +1,16 @@
 import tkinter as tk
+from tkinter import ttk
+import customtkinter
+import tkcalendar
+from PIL import Image, ImageTk
+
 from Services.EmployeeServices import EmployeeService
-from tkcalendar import Calendar
+from tkcalendar import Calendar, DateEntry
 
 
 class UserEmployeeGUI:
-    _rootWindow: tk.Tk
-    _parentFrame: tk.Frame
+    _rootWindow: customtkinter.CTk
+    _parentFrame: customtkinter.CTkFrame
     _EmployeeService: EmployeeService
 
     def __init__(self, rootWindow, Frame, userData):
@@ -15,36 +20,55 @@ class UserEmployeeGUI:
 
     def employeeChoiceMenu(self):
         try:
-            frame = tk.Frame(self._rootWindow, width=800, height=800)
-            frame.grid(row=0, column=0, sticky='news')
+            newWindow=customtkinter.CTkToplevel()
+            newWindow.geometry(self._rootWindow.winfo_geometry())
+            frame=customtkinter.CTkFrame(newWindow, width=1000, height=800)
+            frame.place(relx=0, rely=0)
             frame.tkraise(self._parentFrame)
-            tk.Label(frame, text='What type of employee would you like to add?').place(relx=0.5, rely=0.2,
-                                                                                       anchor='center')
-            tk.Button(frame, text='Software Engineer',
-                      command=lambda: self.employeeDetailsEntryMenu(frame, "createSoftwareEngineer"),
-                      fg='black',
-                      bg='white').place(relx=0.1, rely=0.3,
-                                        anchor='center')
-            tk.Button(frame, text='Manager',
-                      command=lambda: self.employeeDetailsEntryMenu(frame, "createManager"),
-                      fg='black',
-                      bg='white').place(relx=0.3, rely=0.3,
-                                        anchor='center')
-            tk.Button(frame, text='Architect',
-                      command=lambda: self.employeeDetailsEntryMenu(frame, "createArchitect"),
-                      fg='black',
-                      bg='white').place(relx=0.5, rely=0.3,
-                                        anchor='center')
-            tk.Button(frame, text='Maids',
-                      command=lambda: self.employeeDetailsEntryMenu(frame, "createMaid"),
-                      fg='black',
-                      bg='white').place(relx=0.7, rely=0.3,
-                                        anchor='center')
-            tk.Button(frame, text='IT Staff',
-                      command=lambda: self.employeeDetailsEntryMenu(frame, "createITStaff"),
-                      fg='black',
-                      bg='white').place(relx=0.9, rely=0.3,
-                                        anchor='center')
+            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                   text_color="black", text="What type of employee would you like to add?", width=100,
+                                   corner_radius=50, height=30, compound="top").place(relx=0.25, rely=0.2,
+                                                                                      anchor='center')
+            AddEmployee = ImageTk.PhotoImage(Image.open("assets/addEmployee.png").resize((50, 50), Image.ANTIALIAS))
+            
+            AddManager = ImageTk.PhotoImage(Image.open("assets/manager.png").resize((50, 50), Image.ANTIALIAS))
+            AddMaid = ImageTk.PhotoImage(Image.open("assets/maid.png").resize((50, 50), Image.ANTIALIAS))
+            AddArchitect = ImageTk.PhotoImage(Image.open("assets/architect.png").resize((50, 50), Image.ANTIALIAS))
+            AddITStaff = ImageTk.PhotoImage(Image.open("assets/ITstaff.png").resize((50, 50), Image.ANTIALIAS))
+            exit = ImageTk.PhotoImage(Image.open("assets/exit.png").resize((50, 50), Image.ANTIALIAS))
+            customtkinter.CTkButton(text_font=( "Malgun Gothic", 10),image=AddEmployee,master=frame,fg_color="white",
+                                    text_color="black",text="Manager", width=80,corner_radius=50, height=70,compound="top",
+                                    command=lambda: self.employeeDetailsEntryMenu(frame, "createSoftwareEngineer")).place(relx=0.25, rely=0.3,anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=AddManager, master=frame, fg_color="white",
+                                    text_color="black", text="Manager", width=80, corner_radius=50, height=70,
+                                    compound="top",
+                                    command=lambda: self.employeeDetailsEntryMenu(frame,
+                                                                                  "createSoftwareEngineer")).place(
+                relx=0.25, rely=0.4, anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=AddArchitect, master=frame, fg_color="white",
+                                    text_color="black", text="Architect", width=80, corner_radius=50, height=70,
+                                    compound="top",
+                                    command=lambda: self.employeeDetailsEntryMenu(frame,
+                                                                                  "createSoftwareEngineer")).place(
+                relx=0.25, rely=0.5, anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=AddITStaff, master=frame, fg_color="white",
+                                    text_color="black", text="IT Staff", width=80, corner_radius=50, height=70,
+                                    compound="top",
+                                    command=lambda: self.employeeDetailsEntryMenu(frame,
+                                                                                  "createSoftwareEngineer")).place(
+                relx=0.25, rely=0.6, anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=AddMaid, master=frame, fg_color="white",
+                                    text_color="black", text="Maid", width=80, corner_radius=50, height=70,
+                                    compound="top",
+                                    command=lambda: self.employeeDetailsEntryMenu(frame,
+                                                                                  "createSoftwareEngineer")).place(
+                relx=0.25, rely=0.7, anchor='center')
+
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=exit, master=frame, fg_color="white",
+                                    text_color="black", text="Exit", width=80, corner_radius=50, height=70,
+                                    compound="top",
+                                    command=self._rootWindow.destroy).place(relx=0.9, rely=0.1, anchor='center')
+            newWindow.mainloop()
         except Exception as E:
             print(E)
 
@@ -52,26 +76,56 @@ class UserEmployeeGUI:
         try:
             name = tk.StringVar()
             age = tk.StringVar()
-            tk.Label(frame, text='Enter the name of the employee:').place(relx=0.2, rely=0.4,
-                                                                          anchor='center')
-            tk.Entry(frame, textvariable=name).place(relx=0.5, rely=0.4, anchor='center')
-            tk.Label(frame, text='Enter the age of the employee:').place(relx=0.2, rely=0.5,
-                                                                         anchor='center')
-            tk.Entry(frame, textvariable=age).place(relx=0.5, rely=0.5, anchor='center')
-            tk.Label(frame, text='Select the date of joining of the employee:').place(relx=0.2, rely=0.65,
+            selectedDate = tk.StringVar(master=frame)
+            selectedDate.set("Select the data:")
+            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                   text_color="black", text="Enter the name of the employee:", width=100,
+                                   corner_radius=50, height=30, compound="top").place(relx=0.6, rely=0.3,
                                                                                       anchor='center')
-            cal = Calendar(frame, font="Arial 6", selectmode='day',
-                           year=2022, month=5,
-                           day=22)
-            cal.place(relx=0.5, rely=0.65, anchor='center')
-            tk.Button(frame, text="Confirm data",
-                      command=lambda: [
-                          self._EmployeeService.insertEmployee(name.get(), age.get(), cal.get_date(), choice,
-                                                               ), frame.destroy()]).place(
-                relx=0.2, rely=0.7,
-                anchor='center')
-            tk.Button(frame, text="Back",
-                      command=frame.destroy).place(relx=0.2, rely=0.75, anchor='center')
+            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                   text_color="black", text="Enter the age of the employee:", width=100,
+                                   corner_radius=50, height=30, compound="top").place(relx=0.6, rely=0.4,
+                                                                                      anchor='center')
+            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                   text_color="black", text='Select the date of joining of the employee:', width=100,
+                                   corner_radius=50, height=30, compound="top").place(relx=0.6, rely=0.5,
+                                                                                      anchor='center')
+
+            customtkinter.CTkEntry(frame, textvariable=name, border_color="white", corner_radius=5,
+                                   text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.9, rely=0.3, anchor='center')
+
+            customtkinter.CTkEntry(frame, textvariable=age, border_color="white", corner_radius=5,
+                                   text_color="white", width=100, height=2, text_font=("Bold", 8)).place(relx=0.9,
+                                                                                                         rely=0.4,
+                                                                                                         anchor='center')
+            style = ttk.Style()
+            style.configure('my.DateEntry',
+                            corner_radius=50,
+                            width=100,
+                            text_color="white",
+                            fieldbackground='black',
+                            background='white',
+                            foreground='white',
+                            arrowcolor='white')
+            cal=DateEntry(master=frame,textvariable=selectedDate,style='my.DateEntry')
+            cal.config(background = "black")
+            cal.place(relx=0.9, rely=0.5, anchor='center')
+            back = ImageTk.PhotoImage(Image.open("assets/back.png").resize((50, 50), Image.ANTIALIAS))
+
+            confirm = ImageTk.PhotoImage(Image.open("assets/confirm.webp").resize((50, 50), Image.ANTIALIAS))
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=back, master=frame, fg_color="white",
+                                    text_color="black", text="Back", width=30, corner_radius=50, height=30,
+                                    compound="top",
+                      command= self._rootWindow.destroy).place(relx=0.65, rely=0.6, anchor='center')
+
+
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=confirm, master=frame, fg_color="white",
+                                    text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=lambda: [
+                                        self._EmployeeService.insertEmployee(name.get(), age.get(), cal.get_date(),
+                                                                             choice,
+                                                                             ), self._rootWindow.destroy()]).place(relx=0.5, rely=0.6, anchor='center')
         except Exception as E:
             print(E)
 
