@@ -4,6 +4,9 @@ from tkinter import ttk
 import customtkinter
 from PIL import ImageTk, Image
 
+from PopUps.ErrorPopUp import ErrorPopUp
+from PopUps.ConfirmationPopUp import ConfirmationPopUp
+
 from Services.CustomerServices import CustomerService
 
 
@@ -61,6 +64,7 @@ class UserCustomerGUI:
         back = ImageTk.PhotoImage(Image.open("assets/back.png").resize((50, 50), Image.ANTIALIAS))
 
         confirm = ImageTk.PhotoImage(Image.open("assets/confirm.webp").resize((50, 50), Image.ANTIALIAS))
+        customerCreated = ConfirmationPopUp()
         customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=back, master=frame, fg_color="white",
                                 text_color="black", text="Back", width=30, corner_radius=50, height=30,
                                 compound="top",
@@ -72,7 +76,7 @@ class UserCustomerGUI:
                                 command=lambda: [
                                     self._CustomerService.createCustomer(name.get(), age.get(), aadhar.get(),
                                                                          customerType.get()),
-                                    frame.destroy()]).place(relx=0.5,
+                                    frame.destroy(), customerCreated.createConfirmationPopUp("Employee created.")]).place(relx=0.5,
                                                             rely=0.6,
                                                             anchor='center')
 

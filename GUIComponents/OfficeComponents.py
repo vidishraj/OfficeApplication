@@ -4,6 +4,9 @@ from tkinter import ttk
 import customtkinter
 from PIL import ImageTk, Image
 
+from PopUps.ErrorPopUp import ErrorPopUp
+from PopUps.ConfirmationPopUp import ConfirmationPopUp
+
 from Services.OfficeServices import OfficeService
 
 
@@ -70,10 +73,11 @@ class UserOfficeGUI:
                                text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
                                                                                                       rely=0.65,
                                                                                                       anchor='center')
+        officeCreationPopUp = ConfirmationPopUp()
         customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=frame, fg_color="white",
                                 text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
                                 compound="top",
-                                command=lambda: [self._OfficeService.addOffice(name.get(), location.get(), True,
+                                command=lambda: [officeCreationPopUp.createConfirmationPopUp("Office Created."),self._OfficeService.addOffice(name.get(), location.get(), True,
                                                                  employeeCount.get()) if choice else
                                    self._OfficeService.addOffice(name.get(), location.get(), False, employeeCount.get())
                       , frame.destroy()]).place(relx=0.2, rely=0.75, anchor='center')
@@ -165,11 +169,11 @@ class UserOfficeGUI:
                                    text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
                                                                                                           rely=0.4,
                                                                                                           anchor='center')
-
+            expenseSetPopUp=ConfirmationPopUp()
             customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=frame, fg_color="white",
                                 text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
                                 compound="top",
-                                command=lambda: [
+                                command=lambda: [expenseSetPopUp.createConfirmationPopUp("Expense Set."),
                                     self._OfficeService.setExpense(officeName.get(), newExpense.get()), frame.destroy()]).place(relx=0.5,
                                                                                                     rely=0.6,
                                                                                                     anchor='center')

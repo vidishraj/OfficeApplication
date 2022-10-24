@@ -4,6 +4,8 @@ from tkinter import ttk
 import customtkinter
 from PIL import Image, ImageTk
 
+from PopUps.ErrorPopUp import ErrorPopUp
+from PopUps.ConfirmationPopUp import ConfirmationPopUp
 from Services.AccountServices import AccountService
 
 
@@ -36,14 +38,14 @@ class UserAccountGUI:
         customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
                                 text_color="black", text="Back", width=30, corner_radius=50, height=30,
                                 compound="top",
-                                command=frame.destroy).place(relx=0.65, rely=0.6, anchor='center')
-
-        customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=frame, fg_color="white",
-                                text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
+                                command=frame.destroy).place(relx=0.3, rely=0.65, anchor='center')
+        choose = ImageTk.PhotoImage(Image.open("assets/choose.png").resize((50, 50), Image.ANTIALIAS))
+        customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=choose, master=frame, fg_color="white",
+                                text_color="black", text="Choose", width=30, corner_radius=50, height=30,
                                 compound="top",
-                                command=lambda: [self.makeAccount(frame, customerName.get())]).place(relx=0.5,
-                                                            rely=0.6,
-                                                            anchor='center')
+                                command=lambda: self.makeAccount(frame, customerName.get())).place(
+            relx=0.7, rely=0.2, anchor='center')
+
 
     def makeAccount(self, frame, selectedCustomerName):
         selectedCustomer=self._AccountService.returnCustomerFromName(selectedCustomerName)
@@ -79,13 +81,13 @@ class UserAccountGUI:
                                        text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
                                                                                                               rely=0.5,
                                                                                                               anchor='center')
-
+                AccountOpened = ConfirmationPopUp()
                 customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=frame,
                                         fg_color="white",
                                         text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
                                         compound="top",
                                         command=lambda: [self._AccountService.addAccount(selectedCustomerName, amount.get(),var.get()),
-                                           frame.destroy()]).place(relx=0.2,rely=0.65,anchor='center')
+                                           frame.destroy(), AccountOpened.createConfirmationPopUp("Account Opened.")]).place(relx=0.2,rely=0.65,anchor='center')
             elif selectedCustomer.getType() == "Non-Retail":
                 amount = tk.StringVar()
                 customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",

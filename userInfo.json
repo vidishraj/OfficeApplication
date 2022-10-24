@@ -30,7 +30,13 @@
                     "age": 0,
                     "aadhar": 0,
                     "typeOfAccount": "Retail",
-                    "accountDetails": null
+                    "accountDetails": {
+                        "accountNumber": 15369,
+                        "Deposit": 300,
+                        "initDeposit": 300,
+                        "accountType": "Checking",
+                        "timeOfAccountOpening": "24/10/22 15:09:58"
+                    }
                 }
             ],
             "OfficeList": [
@@ -51,25 +57,35 @@
             ],
             "EmployeeList": [
                 {
-                    "name": "Raju",
-                    "age": "29",
-                    "joiningDate": "11/10/2022",
+                    "name": "akk",
+                    "age": "21",
+                    "joiningDate": "03/10/2022",
                     "salary": 100000,
                     "workinghours": 7,
                     "type": "createSoftwareEngineer",
                     "manager": null
                 },
                 {
-                    "name": "dk",
-                    "age": "12",
-                    "joiningDate": "04/10/2022",
+                    "name": "mann",
+                    "age": "21",
+                    "joiningDate": "12/10/2022",
                     "salary": 100000,
                     "workinghours": 7,
-                    "type": "createSoftwareEngineer",
+                    "type": "createManager",
                     "manager": null
                 }
             ],
-            "ManagerList": []
+            "ManagerList": [
+                {
+                    "name": "mann",
+                    "age": "21",
+                    "joiningDate": "12/10/2022",
+                    "salary": 100000,
+                    "workinghours": 7,
+                    "type": "createManager",
+                    "manager": null
+                }
+            ]
         },
         {
             "Email": "raju",

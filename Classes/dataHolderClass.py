@@ -29,10 +29,13 @@ class dataHolder:
             for employee in EmployeeList:
                 newEmp = None
                 employeeJoining = datetime.strptime(employee['joiningDate'], '%d/%m/%Y')
-                #print(employeeJoining, type(employeeJoining), check)
                 if employee['type'] == "createSoftwareEngineer":
                     newEmp = SoftwareEngineer(employee['name'], employee['age'], employeeJoining,
                                               employee['type'])
+                if employee['type'] == "createManager":
+                    newEmp = SoftwareEngineer(employee['name'], employee['age'], employeeJoining,
+                                              employee['type'])
+                    self.__ManagerList.append(newEmp)
                 elif employee['type'] == "createITStaff":
                     newEmp = ITstaff(employee['name'], employee['age'], employeeJoining, employee['type'])
                 elif employee['type'] == "createMaid":
@@ -41,7 +44,6 @@ class dataHolder:
                     newEmp = Architect(employee['name'], employee['age'], employeeJoining, employee['type'])
                 if employee['manager'] is not None:
                     newEmp = Manager(employee['name'], employee['age'], employeeJoining, employee['type'])
-                    self.__ManagerList.append(newEmp)
                     newEmp.addManager(newEmp)
                 self.__EmployeeList.append(newEmp)
         except Exception as E:
