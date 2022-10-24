@@ -4,6 +4,9 @@ from Classes.EmployeeSubclasses import SoftwareEngineer, ITstaff, Maid, Architec
 from Classes.EmployeeClass import Manager
 from Classes.OfficeClass import Office
 from datetime import datetime
+from logger import logging
+
+logger = logging.getLogger('Office Application')
 
 
 class dataHolder:
@@ -47,7 +50,7 @@ class dataHolder:
                     newEmp.addManager(newEmp)
                 self.__EmployeeList.append(newEmp)
         except Exception as E:
-            print("hello",E)
+            logger.error(f"Error while setting employee list. {E}")
 
     def setCustomerList(self, CustomerList):
         try:
@@ -67,7 +70,7 @@ class dataHolder:
                                            customer["typeOfAccount"], None)
                     self.__CustomerList.append(newCustomer)
         except Exception as E:
-            print(E)
+            logger.error(E)
 
     def setOfficeList(self, OfficeList):
         try:
@@ -75,4 +78,4 @@ class dataHolder:
                 newOffice = Office(office["name"], office["location"], office["officeType"], office["employeeCount"])
                 self.__OfficeList.append(newOffice)
         except Exception as E:
-            print(E)
+            logger.error("Error setting office list in data holder.")

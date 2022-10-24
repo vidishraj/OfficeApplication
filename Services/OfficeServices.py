@@ -1,5 +1,7 @@
 from Classes.OfficeClass import Office
-import tkinter as tk
+from logger import logging
+
+logger = logging.getLogger('Office Application')
 
 from Classes.dataHolderClass import dataHolder
 
@@ -19,7 +21,6 @@ class OfficeService:
                 return office
 
     def setExpense(self, Name, Expense):
-        print(Name, Expense)
         office: Office =self.returnOfficeFromName(Name)
         office.addExpense(Expense)
 
@@ -28,7 +29,7 @@ class OfficeService:
             newOffice = Office(name, location, officeType, employeeCount)
             self._userServiceInstance.getOfficeList().append(newOffice)
         except Exception as e:
-            print(e)
+            logger.error(f"Error while adding office. {e}")
 
     def listOffices(self):
         lst = []

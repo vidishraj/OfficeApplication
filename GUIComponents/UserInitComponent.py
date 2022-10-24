@@ -32,7 +32,6 @@ class UserInit:
 
     def initUserWindow(self):
         try:
-
             loginWindow = customtkinter.CTk()
             self.parentWindow = loginWindow
             loginWindow.title("OFFICE MANAGEMENT APPLICATION")
@@ -63,14 +62,13 @@ class UserInit:
                                    text_color="black", image=passwordImage, text="Password", width=100,
                                    corner_radius=50, height=90, compound="top").place(relx=0.5, rely=0.54,
                                                                                       anchor='center')
-            passwordText = customtkinter.CTkTextbox(self.userinfoFrame, border_color="red", corner_radius=5,
+            passwordText = customtkinter.CTkEntry(self.userinfoFrame,show="*", border_color="black", corner_radius=5,
                                                     text_color="white", width=100, height=2, text_font=("Bold", 8))
             passwordText.place(relx=0.5, rely=0.6, anchor='center')
-
             # Buttons
             customtkinter.CTkButton(self.userinfoFrame, text='Sign In', fg_color="white", text_color="black",
                                     command=lambda: [self.checkUser(userNameText.textbox.get(1.0, "end-1c"),
-                                                                    passwordText.textbox.get(1.0, "end-1c"))],
+                                                                    passwordText.get())],
                                     width=190, height=40, compound="top").place(
                 relx=0.5, rely=0.75, anchor='center')
 
@@ -134,7 +132,7 @@ class UserInit:
                                    text_color="black", text="Enter your password:", width=100,
                                    corner_radius=50, height=90, compound="top").place(relx=0.5, rely=0.54,
                                                                                       anchor='center')
-            passwordText = customtkinter.CTkTextbox(self.userinfoFrame, border_color="red", corner_radius=5,
+            passwordText = customtkinter.CTkEntry(self.userinfoFrame, show="*", border_color="black", corner_radius=5,
                                                     text_color="white", width=100, height=2, text_font=("Bold", 8))
 
             passwordText.place(relx=0.5, rely=0.7, anchor='center')
@@ -152,7 +150,7 @@ class UserInit:
                     CustomerDict = json.load(CustomerFile)
                     newUser = dict()
                     newUser['Email'] = userNameText.textbox.get(1.0, "end-1c")
-                    newUser['Password'] = passwordText.textbox.get(1.0, "end-1c")
+                    newUser['Password'] = passwordText.get()
                     newUser['CustomerList'] = None
                     newUser['ManagerList'] = None
                     newUser['OfficeList'] = None
@@ -378,7 +376,7 @@ class UserInit:
                     OfficeList = [office.toJSON() for office in self.__userData.getOfficeList()]
                     logger.info("Serialising data process completed.")
                 except Exception as ex:
-                    print(ex)
+                    logger.error(f"Problem while saving user. {ex}")
                     return
                 CustomerDict['Users'][self.__currentUserIndex]['CustomerList'] = CustomerList
                 CustomerDict['Users'][self.__currentUserIndex]['EmployeeList'] = EmployeeList

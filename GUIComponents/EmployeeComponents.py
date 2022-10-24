@@ -203,121 +203,121 @@ class UserEmployeeGUI:
             logger.error(f"Error while listing employees {E}")
 
     def setManager(self):
-        frame = customtkinter.CTkFrame(self._rootWindow, width=1000, height=800)
-        frame.grid(row=0, column=0, sticky='news')
-        if len(self._EmployeeService.returnEmployeeList()) > 0:
-            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
-                                   text_color="black", text="Choose Employee:", width=100,
-                                   corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.2,
-                                                                                      anchor='center')
-            employeeValue = tk.StringVar(frame)
-            employeeValue.set("Choose Employee")
-            employeeNameList = self._EmployeeService.returnEmployeeNameList()
-            customerMenu = customtkinter.CTkOptionMenu(frame, variable=employeeValue, values=employeeNameList,
-                                                       fg_color="white", text_color="black", button_color="white")
-            customerMenu.place(relx=0.5, rely=0.2, anchor='center')
+        try:
+            frame = customtkinter.CTkFrame(self._rootWindow, width=1000, height=800)
+            frame.grid(row=0, column=0, sticky='news')
+            logger.info("Setting Manager Menu Opened.")
+            if len(self._EmployeeService.returnEmployeeList()) > 0:
+                customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                       text_color="black", text="Choose Employee:", width=100,
+                                       corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.2,
+                                                                                          anchor='center')
+                employeeValue = tk.StringVar(frame)
+                employeeValue.set("Choose Employee")
+                employeeNameList = self._EmployeeService.returnEmployeeNameList()
+                customerMenu = customtkinter.CTkOptionMenu(frame, variable=employeeValue, values=employeeNameList,
+                                                           fg_color="white", text_color="black", button_color="white")
+                customerMenu.place(relx=0.5, rely=0.2, anchor='center')
 
-            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
-                                   text_color="black", text="Choose Manager:", width=100,
-                                   corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.4,
-                                                                                      anchor='center')
-            managerValue = tk.StringVar(frame)
-            managerValue.set("Choose Manager:")
-            managerNameList = self._EmployeeService.returnManagerNameList()
-            customerMenu = customtkinter.CTkOptionMenu(frame, variable=managerValue, values=managerNameList,
-                                                       fg_color="white", text_color="black", button_color="white")
-            customerMenu.place(relx=0.5, rely=0.4, anchor='center')
+                customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                       text_color="black", text="Choose Manager:", width=100,
+                                       corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.4,
+                                                                                          anchor='center')
+                managerValue = tk.StringVar(frame)
+                managerValue.set("Choose Manager:")
+                managerNameList = self._EmployeeService.returnManagerNameList()
+                customerMenu = customtkinter.CTkOptionMenu(frame, variable=managerValue, values=managerNameList,
+                                                           fg_color="white", text_color="black", button_color="white")
+                customerMenu.place(relx=0.5, rely=0.4, anchor='center')
 
-        else:
-            tk.Label(frame, text='There are no employees currently.').place(relx=0.2, rely=0.2, anchor='center')
-        managerSetPopup = ConfirmationPopUp()
-        customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=frame, fg_color="white",
-                                text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
-                                compound="top",
-                                command=lambda: [frame.destroy(),
-                                                 managerSetPopup.createConfirmationPopUp("Manager set.")
-                                    , self._EmployeeService.returnEmployeeFromName(employeeValue.get()).addManager(
-                                        self._EmployeeService.returnManagerFromName(managerValue.get()))
-                                                 ]).place(relx=0.5, rely=0.6, anchor='center')
+            else:
+                tk.Label(frame, text='There are no employees currently.').place(relx=0.2, rely=0.2, anchor='center')
+            managerSetPopup = ConfirmationPopUp()
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=frame, fg_color="white",
+                                    text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=lambda: [frame.destroy(),
+                                                     managerSetPopup.createConfirmationPopUp("Manager set.")
+                                        , self._EmployeeService.returnEmployeeFromName(employeeValue.get()).addManager(
+                                            self._EmployeeService.returnManagerFromName(managerValue.get()))
+                                                     ]).place(relx=0.5, rely=0.6, anchor='center')
 
-        customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
-                                text_color="black", text="Back", width=30, corner_radius=50, height=30,
-                                compound="top",
-                                command=frame.destroy).place(relx=0.65, rely=0.6, anchor='center')
-
-        def confirmChoice():
-            newFrame = customtkinter.CTkFrame(self._rootWindow, width=1000, height=800)
-            newFrame.grid(row=0, column=0, sticky='news')
-            tk.Label(newFrame,
-                     text=f"table {self._EmployeeService.returnManagerFromName(managerValue.get()).getName()} as "
-                          f"{self._EmployeeService.returnEmployeeFromName(employeeValue.get()).getName()}'s manager?") \
-                .place(relx=0.2, rely=0.4, anchor='center')
-            tk.Button(newFrame, text="Confirm",
-                      command=lambda: [
-                          self._EmployeeService.returnEmployeeFromName(employeeValue.get()).addManager(
-                              self._EmployeeService.returnManagerFromName(managerValue.get())),
-                          newFrame.destroy(), frame.destroy()]).place(relx=0.1, rely=0.5, anchor='center')
             customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
                                     text_color="black", text="Back", width=30, corner_radius=50, height=30,
                                     compound="top",
                                     command=frame.destroy).place(relx=0.65, rely=0.6, anchor='center')
+        except Exception as ex:
+            logger.error(f"Error while setting manager. {ex}")
+
+
 
     def renderChangePage(self, choice):
-        frame = customtkinter.CTkFrame(self._rootWindow, width=1000, height=800)
-        frame.grid(row=0, column=0, sticky='news')
-        if len(self._EmployeeService.returnEmployeeList()) > 0:
-            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
-                                   text_color="black", text="Choose the Employee", width=100,
-                                   corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.2,
-                                                                                      anchor='center')
-            employeeName = tk.StringVar(frame)
-            employeeName.set("Choose Employee")
-            employeeNameList = self._EmployeeService.returnEmployeeNameList()
-            employeeMenu = customtkinter.CTkOptionMenu(frame, variable=employeeName, values=employeeNameList,
-                                                       fg_color="white", text_color="black", button_color="white")
-            employeeMenu.place(relx=0.5, rely=0.2, anchor='center')
-            choose = ImageTk.PhotoImage(Image.open("assets/choose.png").resize((50, 50), Image.ANTIALIAS))
-            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=choose, master=frame, fg_color="white",
-                                    text_color="black", text="Choose", width=30, corner_radius=50, height=30,
-                                    compound="top", command=lambda: setSalary(frame) if choice == "salary" else
-                setWorkTime(frame)).place(relx=0.7, rely=0.2, anchor='center')
-        else:
-            tk.Label(frame, text='There are no employees currently.').place(relx=0.2, rely=0.2, anchor='center')
+        try:
+            frame = customtkinter.CTkFrame(self._rootWindow, width=1000, height=800)
+            frame.grid(row=0, column=0, sticky='news')
+            if len(self._EmployeeService.returnEmployeeList()) > 0:
+                customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                       text_color="black", text="Choose the Employee", width=100,
+                                       corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.2,
+                                                                                          anchor='center')
+                employeeName = tk.StringVar(frame)
+                employeeName.set("Choose Employee")
+                employeeNameList = self._EmployeeService.returnEmployeeNameList()
+                employeeMenu = customtkinter.CTkOptionMenu(frame, variable=employeeName, values=employeeNameList,
+                                                           fg_color="white", text_color="black", button_color="white")
+                employeeMenu.place(relx=0.5, rely=0.2, anchor='center')
+                choose = ImageTk.PhotoImage(Image.open("assets/choose.png").resize((50, 50), Image.ANTIALIAS))
+                customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=choose, master=frame, fg_color="white",
+                                        text_color="black", text="Choose", width=30, corner_radius=50, height=30,
+                                        compound="top", command=lambda: setSalary(frame) if choice == "salary" else
+                    setWorkTime(frame)).place(relx=0.7, rely=0.2, anchor='center')
+            else:
+                tk.Label(frame, text='There are no employees currently.').place(relx=0.2, rely=0.2, anchor='center')
 
-        customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
-                                text_color="black", text="Back", width=30, corner_radius=50, height=30,
-                                compound="top",
-                                command=frame.destroy).place(relx=0.65, rely=0.6, anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
+                                    text_color="black", text="Back", width=30, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=frame.destroy).place(relx=0.65, rely=0.6, anchor='center')
+        except Exception as ex:
+            logger.error(f"Error while rendering change page. {ex}")
 
         def setSalary(parentFrame):
-            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=parentFrame, fg_color="white",
-                                   text_color="black", text="Enter the new salary of the employee:", width=100,
-                                   corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.4,
-                                                                                      anchor='center')
-            newSalary = tk.IntVar(parentFrame, 0)
-            customtkinter.CTkEntry(parentFrame, textvariable=newSalary).place(relx=0.5, rely=0.4, anchor='center')
-            salarySetPopUp = ConfirmationPopUp()
-            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=parentFrame, fg_color="white",
-                                    text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
-                                    compound="top",
-                                    command=lambda: [salarySetPopUp.createConfirmationPopUp("Salary set."),
-                                                     self._EmployeeService.changeWorktime(employeeName.get(),
-                                                                                          newSalary.get()),
-                                                     parentFrame.destroy()]).place(relx=0.5, rely=0.6, anchor='center')
+            try:
+                logger.info("Setting Salary.")
+                customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=parentFrame, fg_color="white",
+                                       text_color="black", text="Enter the new salary of the employee:", width=100,
+                                       corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.4,
+                                                                                          anchor='center')
+                newSalary = tk.IntVar(parentFrame, 0)
+                customtkinter.CTkEntry(parentFrame, textvariable=newSalary).place(relx=0.5, rely=0.4, anchor='center')
+                salarySetPopUp = ConfirmationPopUp()
+                customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=parentFrame, fg_color="white",
+                                        text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
+                                        compound="top",
+                                        command=lambda: [salarySetPopUp.createConfirmationPopUp("Salary set."),
+                                                         self._EmployeeService.changeWorktime(employeeName.get(),
+                                                                                              newSalary.get()),
+                                                         parentFrame.destroy()]).place(relx=0.5, rely=0.6, anchor='center')
+            except Exception as error:
+                logger.error(f"Error while setting salary. {error}")
 
         def setWorkTime(parentFrame):
-            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=parentFrame, fg_color="white",
-                                   text_color="black", text="Enter the new workhours of the employee:", width=100,
-                                   corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.4,
-                                                                                      anchor='center')
-            newWorkingHours = tk.IntVar(parentFrame, 0)
-            customtkinter.CTkEntry(parentFrame, textvariable=newWorkingHours).place(relx=0.5, rely=0.4, anchor='center')
+            try:
+                logger.info("Setting workhours.")
+                customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=parentFrame, fg_color="white",
+                                       text_color="black", text="Enter the new workhours of the employee:", width=100,
+                                       corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.4,
+                                                                                          anchor='center')
+                newWorkingHours = tk.IntVar(parentFrame, 0)
+                customtkinter.CTkEntry(parentFrame, textvariable=newWorkingHours).place(relx=0.5, rely=0.4, anchor='center')
 
-            hoursSetPopUp = ConfirmationPopUp()
-            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=parentFrame, fg_color="white",
-                                    text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
-                                    compound="top",
-                                    command=lambda: [hoursSetPopUp.createConfirmationPopUp("Working Hours Set."),
-                                                     self._EmployeeService.changeWorktime(employeeName.get(),
-                                                                                          newWorkingHours.get()),
-                                                     parentFrame.destroy()]).place(relx=0.5, rely=0.6, anchor='center')
+                hoursSetPopUp = ConfirmationPopUp()
+                customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=parentFrame, fg_color="white",
+                                        text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
+                                        compound="top",
+                                        command=lambda: [hoursSetPopUp.createConfirmationPopUp("Working Hours Set."),
+                                                         self._EmployeeService.changeWorktime(employeeName.get(),
+                                                                                              newWorkingHours.get()),
+                                                         parentFrame.destroy()]).place(relx=0.5, rely=0.6, anchor='center')
+            except Exception as error:
+                logger.error(f"Error while setting salary. {error}")

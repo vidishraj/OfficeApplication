@@ -8,6 +8,9 @@ from PopUps.ErrorPopUp import ErrorPopUp
 from PopUps.ConfirmationPopUp import ConfirmationPopUp
 
 from Services.OfficeServices import OfficeService
+from logger import logging
+
+logger = logging.getLogger('Office Application')
 
 
 class UserOfficeGUI:
@@ -26,6 +29,7 @@ class UserOfficeGUI:
         try:
             frame = customtkinter.CTkFrame(self._rootWindow, width=1000, height=800)
             frame.grid(row=0, column=0, sticky='news')
+            logger.info("Office Adding Menu Opened.")
             customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
                                    text_color="black", text="What type of office would you like to add??", width=100,
                                    corner_radius=50, height=30, compound="top").place(relx=0.5, rely=0.2,
@@ -43,55 +47,58 @@ class UserOfficeGUI:
                                     command=lambda: self.renderMenuForOffice(frame, False)).place(
                 relx=0.6, rely=0.3, anchor='center')
         except Exception as E:
-            print(E)
+            logger.error(f"Problem creating office. {E}")
 
     def renderMenuForOffice(self, frame, choice):
-        name = tk.StringVar()
-        location = tk.StringVar()
-        employeeCount = tk.IntVar()
-        customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
-                               text_color="black", text="Enter the name of the office:", width=100,
-                               corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.4,
-                                                                                  anchor='center')
-        customtkinter.CTkEntry(frame, textvariable=name, border_color="white", corner_radius=5,
-                               text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
-                                                                                                      rely=0.4,
-                                                                                                      anchor='center')
-        customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
-                               text_color="black", text="Enter the location of the office:", width=100,
-                               corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.5,
-                                                                                  anchor='center')
-        customtkinter.CTkEntry(frame, textvariable=location, border_color="white", corner_radius=5,
-                               text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
-                                                                                                      rely=0.5,
-                                                                                                      anchor='center')
-        customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
-                               text_color="black", text="Enter the number of employees in the office:", width=100,
-                               corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.65,
-                                                                                  anchor='center')
-        customtkinter.CTkEntry(frame, textvariable=employeeCount, border_color="white", corner_radius=5,
-                               text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
-                                                                                                      rely=0.65,
-                                                                                                      anchor='center')
-        officeCreationPopUp = ConfirmationPopUp()
-        customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=frame, fg_color="white",
-                                text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
-                                compound="top",
-                                command=lambda: [officeCreationPopUp.createConfirmationPopUp("Office Created."),self._OfficeService.addOffice(name.get(), location.get(), True,
-                                                                 employeeCount.get()) if choice else
-                                   self._OfficeService.addOffice(name.get(), location.get(), False, employeeCount.get())
-                      , frame.destroy()]).place(relx=0.2, rely=0.75, anchor='center')
-        customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
-                                    text_color="black", text="Back", width=30, corner_radius=50, height=30,
+        try:
+            name = tk.StringVar()
+            location = tk.StringVar()
+            employeeCount = tk.IntVar()
+            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                   text_color="black", text="Enter the name of the office:", width=100,
+                                   corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.4,
+                                                                                      anchor='center')
+            customtkinter.CTkEntry(frame, textvariable=name, border_color="white", corner_radius=5,
+                                   text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
+                                                                                                          rely=0.4,
+                                                                                                          anchor='center')
+            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                   text_color="black", text="Enter the location of the office:", width=100,
+                                   corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.5,
+                                                                                      anchor='center')
+            customtkinter.CTkEntry(frame, textvariable=location, border_color="white", corner_radius=5,
+                                   text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
+                                                                                                          rely=0.5,
+                                                                                                          anchor='center')
+            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                   text_color="black", text="Enter the number of employees in the office:", width=100,
+                                   corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.65,
+                                                                                      anchor='center')
+            customtkinter.CTkEntry(frame, textvariable=employeeCount, border_color="white", corner_radius=5,
+                                   text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
+                                                                                                          rely=0.65,
+                                                                                                          anchor='center')
+            officeCreationPopUp = ConfirmationPopUp()
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=frame, fg_color="white",
+                                    text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
                                     compound="top",
-                                    command=frame.destroy).place(relx=0.4, rely=0.75, anchor='center')
+                                    command=lambda: [officeCreationPopUp.createConfirmationPopUp("Office Created."),self._OfficeService.addOffice(name.get(), location.get(), True,
+                                                                     employeeCount.get()) if choice else
+                                       self._OfficeService.addOffice(name.get(), location.get(), False, employeeCount.get())
+                          , frame.destroy()]).place(relx=0.2, rely=0.75, anchor='center')
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
+                                        text_color="black", text="Back", width=30, corner_radius=50, height=30,
+                                        compound="top",
+                                        command=frame.destroy).place(relx=0.4, rely=0.75, anchor='center')
+        except Exception as ex:
+            logger.error(f"Problem while creating office. {ex}")
 
     def listOffices(self):
         try:
             frame = customtkinter.CTkFrame(self._rootWindow, width=1000, height=800)
             frame.grid(row=0, column=0, sticky='news')
             style = ttk.Style()
-
+            logger.info("Listing Offices.")
             style.theme_use("default")
 
             style.configure("Treeview",
@@ -137,48 +144,55 @@ class UserOfficeGUI:
                 table.insert(parent='', index='end', iid=i, text='',
                              values=userOfficeInfo[i])
         except Exception as E:
-            print(E)
+            logger.error(f"Error while listing offices. {E}")
 
     def addExpenseOption(self):
-        frame = customtkinter.CTkFrame(self._rootWindow, width=1000, height=800)
-        frame.grid(row=0, column=0, sticky='news')
-        newExpense = tk.IntVar(frame)
-        officeName = tk.StringVar(frame)
-        officeNameList=self._OfficeService.returnOfficeNames()
-        officeName.set("Choose Office")
-        customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
-                               text_color="black", text="Pick Office:", width=100,
-                               corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.2,
-                                                                                  anchor='center')
+        try:
+            frame = customtkinter.CTkFrame(self._rootWindow, width=1000, height=800)
+            frame.grid(row=0, column=0, sticky='news')
+            newExpense = tk.IntVar(frame)
+            officeName = tk.StringVar(frame)
+            officeNameList=self._OfficeService.returnOfficeNames()
+            officeName.set("Choose Office")
+            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                   text_color="black", text="Pick Office:", width=100,
+                                   corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.2,
+                                                                                      anchor='center')
 
-        officeMenu = customtkinter.CTkOptionMenu(frame, variable=officeName, values=officeNameList,
-                                                   fg_color="white", text_color="black", button_color="white")
-        officeMenu.place(relx=0.5, rely=0.2, anchor='center')
-        choose = ImageTk.PhotoImage(Image.open("assets/choose.png").resize((50, 50), Image.ANTIALIAS))
-        customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=choose, master=frame, fg_color="white",
-                                text_color="black", text="Choose", width=30, corner_radius=50, height=30,
-                                compound="top",
-                                command=lambda: addExpense()).place(relx=0.7, rely=0.2, anchor='center')
+            officeMenu = customtkinter.CTkOptionMenu(frame, variable=officeName, values=officeNameList,
+                                                       fg_color="white", text_color="black", button_color="white")
+            officeMenu.place(relx=0.5, rely=0.2, anchor='center')
+            choose = ImageTk.PhotoImage(Image.open("assets/choose.png").resize((50, 50), Image.ANTIALIAS))
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=choose, master=frame, fg_color="white",
+                                    text_color="black", text="Choose", width=30, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=lambda: addExpense()).place(relx=0.7, rely=0.2, anchor='center')
+
+            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
+                                    text_color="black", text="Back", width=30, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=frame.destroy).place(relx=0.65, rely=0.6, anchor='center')
+        except Exception as error:
+            logger.error(f"Error while setting expenses. {error}")
 
         def addExpense():
-            customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
-                                   text_color="black", text="Enter Expense:", width=100,
-                                   corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.4,
-                                                                                      anchor='center')
-            customtkinter.CTkEntry(frame, textvariable=newExpense, border_color="white", corner_radius=5,
-                                   text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
-                                                                                                          rely=0.4,
-                                                                                                          anchor='center')
-            expenseSetPopUp=ConfirmationPopUp()
-            customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=frame, fg_color="white",
-                                text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
-                                compound="top",
-                                command=lambda: [expenseSetPopUp.createConfirmationPopUp("Expense Set."),
-                                    self._OfficeService.setExpense(officeName.get(), newExpense.get()), frame.destroy()]).place(relx=0.5,
-                                                                                                    rely=0.6,
-                                                                                                    anchor='center')
+            try:
+                customtkinter.CTkLabel(text_font=("Malgun Gothic", 10), master=frame, fg_color="white",
+                                       text_color="black", text="Enter Expense:", width=100,
+                                       corner_radius=50, height=30, compound="top").place(relx=0.2, rely=0.4,
+                                                                                          anchor='center')
+                customtkinter.CTkEntry(frame, textvariable=newExpense, border_color="white", corner_radius=5,
+                                       text_color="white", width=100, height=2, text_font=("B old", 8)).place(relx=0.5,
+                                                                                                              rely=0.4,
+                                                                                                              anchor='center')
+                expenseSetPopUp=ConfirmationPopUp()
+                customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.confirm, master=frame, fg_color="white",
+                                    text_color="black", text="Confirm", width=30, corner_radius=50, height=30,
+                                    compound="top",
+                                    command=lambda: [expenseSetPopUp.createConfirmationPopUp("Expense Set."),
+                                        self._OfficeService.setExpense(officeName.get(), newExpense.get()), frame.destroy()]).place(relx=0.5,
+                                                                                                        rely=0.6,
+                                                                                                        anchor='center')
+            except Exception as ex:
+                logger.error(f"Error while adding expenses. {ex}")
 
-        customtkinter.CTkButton(text_font=("Malgun Gothic", 10), image=self.back, master=frame, fg_color="white",
-                                text_color="black", text="Back", width=30, corner_radius=50, height=30,
-                                compound="top",
-                                command=frame.destroy).place(relx=0.65, rely=0.6, anchor='center')

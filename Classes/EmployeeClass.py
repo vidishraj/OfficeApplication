@@ -1,4 +1,7 @@
 from datetime import date
+from logger import logging
+
+logger = logging.getLogger('Office Application')
 
 
 class Employee:
@@ -29,16 +32,16 @@ class Employee:
             selfJSon['manager'] = self._Manager.toJSON() if self._Manager is not None else None
             return selfJSon
         except Exception as ex:
-            print("hello")
+            logger.error(f"Error while serialising employee data. {ex}")
 
     def setSalary(self, newSalary: int):
         self._salary = newSalary
-        print(f"Salary has been set for the employee {self._name}\n")
+        logger.info(f"Salary has been set for the employee {self._name}\n")
         return
 
     def setWorkingHours(self, newHours: int):
         self._workinghours = newHours
-        print(f"New working hours have been set for the employee {self._name}\n")
+        logger.info(f"New working hours have been set for the employee {self._name}\n")
         return
 
     def getName(self):

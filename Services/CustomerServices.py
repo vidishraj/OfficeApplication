@@ -1,5 +1,8 @@
 from Classes.CustomerClass import Customer
 from Classes.dataHolderClass import dataHolder
+from logger import logging
+
+logger = logging.getLogger('Office Application')
 
 
 class CustomerService:
@@ -13,7 +16,7 @@ class CustomerService:
             newCustomer = Customer(name, age, aadhar, typeOfAccount, None)
             self._userServiceInstance.getCustomerList().append(newCustomer)
         except Exception as e:
-            print(e)
+            logger.error(f"Problem in services for creating customer. {e}")
 
     def returnCustomerList(self):
         CustomerNameList = []

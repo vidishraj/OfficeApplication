@@ -1,3 +1,4 @@
+from PopUps.ErrorPopUp import ErrorPopUp
 class Office:
     _Name: str
     _Location: str
@@ -49,5 +50,6 @@ class Office:
     def addExpense(self, expense):
         self.checkLimit()
         if self._limitReached:
-            print("Limit has been reached. Expenses not allowed.")
+            limitError = ErrorPopUp("Limit has been reached. Additional Expenses not allowed.", None)
+            limitError.createErrorPopUp()
         self._expense += expense
