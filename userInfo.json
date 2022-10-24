@@ -51,9 +51,18 @@
             ],
             "EmployeeList": [
                 {
-                    "name": "vidish",
-                    "age": "27",
-                    "joiningDate": "5/11/22",
+                    "name": "Raju",
+                    "age": "29",
+                    "joiningDate": "11/10/2022",
+                    "salary": 100000,
+                    "workinghours": 7,
+                    "type": "createSoftwareEngineer",
+                    "manager": null
+                },
+                {
+                    "name": "dk",
+                    "age": "12",
+                    "joiningDate": "04/10/2022",
                     "salary": 100000,
                     "workinghours": 7,
                     "type": "createSoftwareEngineer",

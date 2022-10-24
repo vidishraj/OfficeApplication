@@ -9,7 +9,8 @@ from .AccountComponents import UserAccountGUI
 from .OfficeComponents import UserOfficeGUI
 import customtkinter
 from PIL import Image, ImageTk
-
+from PopUps.ErrorPopUp import ErrorPopUp
+from PopUps.ConfirmationPopUp import ConfirmationPopUp
 
 class UserInit:
     __username: str
@@ -24,8 +25,8 @@ class UserInit:
         customtkinter.set_appearance_mode("dark")  # Modes: system (default), light, dark
         customtkinter.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
         self.back = None
-        self.frame = None
         self.exit = None
+        self.frame = None
 
     def initUserWindow(self):
         try:
@@ -56,10 +57,9 @@ class UserInit:
                                                     text_color="white", width=100, height=2, text_font=("Bold", 8))
 
             passwordText.place(relx=0.5, rely=0.6, anchor='center')
-            customtkinter.CTkButton(self.userinfoFrame, text='OK', fg_color="white", text_color="black",
+            customtkinter.CTkButton(self.userinfoFrame, text='Sign In', fg_color="white", text_color="black",
                                     command=lambda: [self.checkUser(userNameText.textbox.get(1.0, "end-1c"),
-                                                                    passwordText.textbox.get(1.0, "end-1c")),
-                                                     self.userinfoFrame.destroy()],
+                                                                    passwordText.textbox.get(1.0, "end-1c"))],
                                     width=190, height=40, compound="top").place(relx=0.5, rely=0.75,
                                                                                 anchor='center')
             customtkinter.CTkButton(self.userinfoFrame, text='Register', fg_color="white", text_color="black",
@@ -89,6 +89,9 @@ class UserInit:
 
             if userFlag:
                 self.typeChoiceWindow()
+            else:
+                invalidUserPopUp = ErrorPopUp("Invalid UserName or Password. Please check.", self.parentWindow)
+                invalidUserPopUp.createErrorPopUp()
         except Exception as E:
             print("Problem while checking user credentials.", E)
 
@@ -178,7 +181,7 @@ class UserInit:
                                     fg_color="white",
                                     text_color="black", text="Save Data.", width=80, corner_radius=50, height=70,
                                     compound="top",
-                                    command=self.saveUser).place(relx=0.9, rely=0.3, anchor='center')
+                                    command=lambda: [self.saveUser() ]).place(relx=0.9, rely=0.3, anchor='center')
             menuWindow.mainloop()
         except Exception as E:
             print("Problem with type window.", E)
@@ -331,10 +334,14 @@ class UserInit:
             if self.__currentUserIndex is not None:
                 CustomerFile = open('userInfo.json')
                 CustomerDict = json.load(CustomerFile)
-                CustomerList = [customer.toJSON() for customer in self.__userData.getCustomerList()]
-                EmployeeList = [employee.toJSON() for employee in self.__userData.getEmployeeList()]
-                ManagerList = [manager.toJSON() for manager in self.__userData.getManagerList()]
-                OfficeList = [office.toJSON() for office in self.__userData.getOfficeList()]
+                try:
+                    CustomerList = [customer.toJSON() for customer in self.__userData.getCustomerList()]
+                    EmployeeList = [employee.toJSON() for employee in self.__userData.getEmployeeList()]
+                    ManagerList = [manager.toJSON() for manager in self.__userData.getManagerList()]
+                    OfficeList = [office.toJSON() for office in self.__userData.getOfficeList()]
+                except Exception as ex:
+                    print(ex)
+                    return
                 CustomerDict['Users'][self.__currentUserIndex]['CustomerList'] = CustomerList
                 CustomerDict['Users'][self.__currentUserIndex]['EmployeeList'] = EmployeeList
                 CustomerDict['Users'][self.__currentUserIndex]['ManagerList'] = ManagerList
@@ -342,5 +349,7 @@ class UserInit:
                 with open('userInfo.json', 'w', encoding='utf-8') as f:
                     json.dump(CustomerDict, f, ensure_ascii=False, indent=4)
                 print("User saved")
+                saveDataPopup=ConfirmationPopUp("User data Saved.", self.parentWindow)
+                saveDataPopup.createConfirmationPopUp()
         except Exception as E:
             print("Problem while saving user info." + E.__str__())

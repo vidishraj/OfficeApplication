@@ -1,7 +1,4 @@
-import json
-from datetime import datetime
 from .AccountClass import Account
-from Exceptions.WrongInputException import WrongInputException
 
 class Customer:
 

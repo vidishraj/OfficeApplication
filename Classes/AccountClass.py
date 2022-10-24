@@ -17,13 +17,17 @@ class Account:
         self._timeOfAccountOpening = datetime.now()
 
     def toJSON(self):
-        selfJSon = dict()
-        selfJSon['accountNumber'] = self._accountNumber
-        selfJSon['Deposit'] = self._Deposit
-        selfJSon['initDeposit'] = self._initDeposit
-        selfJSon['accountType'] = self._type
-        selfJSon['timeOfAccountOpening'] = self._timeOfAccountOpening.strftime("%d/%m/%y %H:%M:%S")
-        return selfJSon
+        try:
+            selfJSon = dict()
+            selfJSon['accountNumber'] = self._accountNumber
+            selfJSon['Deposit'] = self._Deposit
+            selfJSon['initDeposit'] = self._initDeposit
+            selfJSon['accountType'] = self._type
+            selfJSon['timeOfAccountOpening'] = self._timeOfAccountOpening.strftime("%d/%m/%y %H:%M:%S")
+            return selfJSon
+        except Exception as ex:
+            print(self._timeOfAccountOpening, type(self._timeOfAccountOpening))
+            print("hello")
 
     def setAccountOpeningTime(self, time):
         self._timeOfAccountOpening = time

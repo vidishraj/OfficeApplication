@@ -18,15 +18,18 @@ class Employee:
         self._dateOfJoining = joiningDate
 
     def toJSON(self):
-        selfJSon = dict()
-        selfJSon['name'] = self._name
-        selfJSon['age'] = self._age
-        selfJSon['joiningDate'] = self._dateOfJoining.strftime('%d/%m/%Y')
-        selfJSon['salary'] = self._salary
-        selfJSon['workinghours'] = self._workinghours
-        selfJSon['type'] = self._type
-        selfJSon['manager'] = self._Manager.toJSON() if self._Manager is not None else None
-        return selfJSon
+        try:
+            selfJSon = dict()
+            selfJSon['name'] = self._name
+            selfJSon['age'] = self._age
+            selfJSon['joiningDate'] = self._dateOfJoining.strftime("%d/%m/%Y")
+            selfJSon['salary'] = self._salary
+            selfJSon['workinghours'] = self._workinghours
+            selfJSon['type'] = self._type
+            selfJSon['manager'] = self._Manager.toJSON() if self._Manager is not None else None
+            return selfJSon
+        except Exception as ex:
+            print("hello")
 
     def setSalary(self, newSalary: int):
         self._salary = newSalary
@@ -42,7 +45,8 @@ class Employee:
         return self._name
 
     def getDOJ(self):
-        return self._dateOfJoining
+        return self._dateOfJoining.strftime("%d/%m/%Y")
+
 
     def getAge(self):
         return self._age
