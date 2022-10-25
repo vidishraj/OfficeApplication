@@ -1,21 +1,25 @@
-#OfficeApplication
+# Office Application
 A reference application for topics such as OOPs, GUI programming, Session Management, Exception handling, Logging, and Code Organization.
 
 The application mimics a mini office management application with four key components.
 
-Offices</br> 
+Offices</br>
+</br>
 Offices have the following properties: name, location, type, number of employees, and expenses. They can be of 2 types: international or local. An international office has an expense limit of $2000 and a local office has a limit of $100000 per month. 
 A user should be allowed to add an office, list all the offices, and add an expense to a certain existing office. No office can exceed the limit set for its type.
 
 Employees</br>
+</br>
 Employees have the following properties: name, age, salary, working hours, date of joining, manager, and type. There are five types of employees that the user should be allowed to create, which are: maid, software engineer, manager, architect, and IT staff. All have unique salaries and working hours(pre-configured). 
 The user should be able to set the manager for an employee, change the salary and working hours, and have an option to list the employees as well.
 
 Customers</br>
+</br>
 Customers have the following properties: name, age, Aadhar number, type, and account. Customers can be of 2 types: retail and non-retail. 
 The user should be able to create a customer and list all the customers.
 
 Accounts</br> 
+</br>
 Accounts have the following properties: Account Number, Deposit, Initial Deposit, and type. Accounts are classified into three types: checking, savings, and loan.Non-retail customers are allowed to open only loan accounts. The user should be allowed to open an account for an existing customer based on the type. There are different rates of interest which should be calculated on a weekly basis for the accounts. Savings accounts have an interest rate of 8%, checking 5% and Loan has an imposed interest of 9%. The user should be allowed to view all the accounts as well.
 
 
