@@ -1,4 +1,5 @@
-# OfficeApplicationA reference application for topics such as OOPs, GUI programming, Session Management, Exception handling, Logging, and Code Organization.
+#OfficeApplication
+A reference application for topics such as OOPs, GUI programming, Session Management, Exception handling, Logging, and Code Organization.
 
 The application mimics a mini office management application with four key components.
 
