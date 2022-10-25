@@ -1,4 +1,7 @@
 from datetime import date
+from logger import logging
+
+logger = logging.getLogger('Office Application')
 
 
 class Employee:
@@ -18,31 +21,35 @@ class Employee:
         self._dateOfJoining = joiningDate
 
     def toJSON(self):
-        selfJSon = dict()
-        selfJSon['name'] = self._name
-        selfJSon['age'] = self._age
-        selfJSon['joiningDate'] = self._dateOfJoining
-        selfJSon['salary'] = self._salary
-        selfJSon['workinghours'] = self._workinghours
-        selfJSon['type'] = self._type
-        selfJSon['manager'] = self._Manager.toJSON() if self._Manager is not None else None
-        return selfJSon
+        try:
+            selfJSon = dict()
+            selfJSon['name'] = self._name
+            selfJSon['age'] = self._age
+            selfJSon['joiningDate'] = self._dateOfJoining.strftime("%d/%m/%Y")
+            selfJSon['salary'] = self._salary
+            selfJSon['workinghours'] = self._workinghours
+            selfJSon['type'] = self._type
+            selfJSon['manager'] = self._Manager.toJSON() if self._Manager is not None else None
+            return selfJSon
+        except Exception as ex:
+            logger.error(f"Error while serialising employee data. {ex}")
 
     def setSalary(self, newSalary: int):
         self._salary = newSalary
-        print(f"Salary has been set for the employee {self._name}\n")
+        logger.info(f"Salary has been set for the employee {self._name}\n")
         return
 
     def setWorkingHours(self, newHours: int):
         self._workinghours = newHours
-        print(f"New working hours have been set for the employee {self._name}\n")
+        logger.info(f"New working hours have been set for the employee {self._name}\n")
         return
 
     def getName(self):
         return self._name
 
     def getDOJ(self):
-        return self._dateOfJoining
+        return self._dateOfJoining.strftime("%d/%m/%Y")
+
 
     def getAge(self):
         return self._age

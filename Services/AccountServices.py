@@ -1,6 +1,9 @@
 from random import randint
 from Classes.AccountClass import Account
 from Classes.dataHolderClass import dataHolder
+from logger import logging
+
+logger = logging.getLogger('Office Application')
 
 
 class AccountService:
@@ -15,9 +18,9 @@ class AccountService:
             accountNumber: int = randint(10000, 99999)
             newAccount: Account = Account(initDeposit, accountNumber, typeOfAccount)
             Customer.setAccount(newAccount)
-            print("Account set.")
+            logger.info("Account set.")
         except Exception as e:
-            print(e)
+            logger.error(f"Error in services for adding account {e}")
 
     def returnAccountHolderList(self):
         AccountList = []
@@ -56,7 +59,6 @@ class AccountService:
                         account['account'].getAccountNumber(), account['account'].latestBalance(),
                         account['account'].latestBalance() - account['account'].getDeposit()]
                 resultList.append(temp)
-            print(resultList)
             return resultList
         except Exception as e:
-            print(e)
+            logger.error(f"Problem in services for displaying money. {e}")

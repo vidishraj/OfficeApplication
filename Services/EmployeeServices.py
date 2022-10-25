@@ -27,7 +27,6 @@ class EmployeeService:
 
     def returnEmployeeList(self, ):
         employeeList = []
-        print(self._userServiceInstance.getEmployeeList())
         for Employee in self._userServiceInstance.getEmployeeList():
             managerName = ""
             if Employee.getManager() is not None:

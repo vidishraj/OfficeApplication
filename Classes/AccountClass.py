@@ -1,5 +1,7 @@
-import json
 from datetime import date, datetime
+from logger import logging
+
+logger = logging.getLogger('Office Application')
 
 
 class Account:
@@ -17,13 +19,16 @@ class Account:
         self._timeOfAccountOpening = datetime.now()
 
     def toJSON(self):
-        selfJSon = dict()
-        selfJSon['accountNumber'] = self._accountNumber
-        selfJSon['Deposit'] = self._Deposit
-        selfJSon['initDeposit'] = self._initDeposit
-        selfJSon['accountType'] = self._type
-        selfJSon['timeOfAccountOpening'] = self._timeOfAccountOpening.strftime("%d/%m/%y %H:%M:%S")
-        return selfJSon
+        try:
+            selfJSon = dict()
+            selfJSon['accountNumber'] = self._accountNumber
+            selfJSon['Deposit'] = self._Deposit
+            selfJSon['initDeposit'] = self._initDeposit
+            selfJSon['accountType'] = self._type
+            selfJSon['timeOfAccountOpening'] = self._timeOfAccountOpening.strftime("%d/%m/%y %H:%M:%S")
+            return selfJSon
+        except Exception as ex:
+            logger.error("Problem while serialising customer data.")
 
     def setAccountOpeningTime(self, time):
         self._timeOfAccountOpening = time
@@ -38,7 +43,7 @@ class Account:
             self._Deposit -= int((0.09 * self._Deposit) * minutes_diff)
             if self._Deposit <= 0:
                 self._Deposit = 0
-                print(f"The Loan account with the account number {self._accountNumber} has been payed.")
+                logger.info(f"The Loan account with the account number {self._accountNumber} has been payed.")
         return self._Deposit
 
     def getDeposit(self):

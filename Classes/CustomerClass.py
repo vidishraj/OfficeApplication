@@ -1,7 +1,5 @@
-import json
-from datetime import datetime
 from .AccountClass import Account
-from Exceptions.WrongInputException import WrongInputException
+from PopUps.ErrorPopUp import ErrorPopUp
 
 class Customer:
 
@@ -45,7 +43,8 @@ class Customer:
         if(self._account==None):
             self._account=accountDeets
         else:
-            print("The customer already has an account.")
+            customerExists= ErrorPopUp("Customer already exists.", None)
+            customerExists.createErrorPopUp()
 
     def getAccount(self):
         return self._account
